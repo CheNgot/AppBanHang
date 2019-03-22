@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
@@ -42,10 +44,17 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0;i<manghinhquangcao.size();i++)
         {
             ImageView imageView = new ImageView(getApplicationContext());
-            Picasso.with(getApplicationContext()).load(i).into(imageView);
+            Picasso.with(getApplicationContext()).load(manghinhquangcao.get(i)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             viewFlipper.addView(imageView);
         }
+        viewFlipper.setFlipInterval(5000);
+        viewFlipper.setAutoStart(true);
+        Animation animation_silde_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_right);
+        Animation animation_slide_out =AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_right);
+        viewFlipper.setInAnimation(animation_silde_in);
+        viewFlipper.setOutAnimation(animation_slide_out);
+
     }
 
     private void ActionBar()
