@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.ViewFlipper;
 
 import com.example.quocthai.appbanhang.R;
+import com.example.quocthai.appbanhang.adapter.LoaispAdapter;
+import com.example.quocthai.appbanhang.model.Loaisp;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ListView listViewmanhinhchinh;
     DrawerLayout drawerLayout;
+    ArrayList<Loaisp> mangloaisp;
+    LoaispAdapter loaispAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationview);
         listViewmanhinhchinh = findViewById(R.id.listviewmanhinhchinh);
         drawerLayout = findViewById(R.id.drawerlayout);
-
+        mangloaisp= new ArrayList<>();
+        loaispAdapter = new LoaispAdapter(mangloaisp,getApplicationContext());
+        listViewmanhinhchinh.setAdapter(loaispAdapter);
 
 
     }
