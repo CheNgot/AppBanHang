@@ -14,10 +14,21 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.quocthai.appbanhang.R;
 import com.example.quocthai.appbanhang.adapter.LoaispAdapter;
 import com.example.quocthai.appbanhang.model.Loaisp;
+import com.example.quocthai.appbanhang.ultil.CheckConnection;
+import com.example.quocthai.appbanhang.ultil.Server;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,13 +41,64 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ArrayList<Loaisp> mangloaisp;
     LoaispAdapter loaispAdapter;
+    int id=0;
+    String tenloaisp="";
+    String hinhanhloaisp="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
-        ActionBar();
-        ActionViewFilpper();
+
+        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+        {
+            ActionBar();
+            ActionViewFilpper();
+            Getdulieuloaisp();
+        }
+        else
+        {
+            CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra lại kết nối");
+            finish();
+        }
+
+    }
+
+    private void Getdulieuloaisp() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Server.Duongdanloaisp, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if(response!=null)
+                {
+                    for(int i=0;i<=response.length();i++)
+                    {
+                        try {
+                            loaispAdapter.notifyDataSetChanged();
+                            JSONObject jsonObject= response.getJSONObject(i);
+                            id=jsonObject.getInt("Id");
+                            tenloaisp=jsonObject.getString("TenLoai");
+                            hinhanhloaisp=jsonObject.getString("HinhLoai");
+                            mangloaisp.add(new Loaisp(id,tenloaisp,hinhanhloaisp));
+                            loaispAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mangloaisp.add(3,new Loaisp(0,"Liên Hệ","https://cdn.onlinewebfonts.com/svg/img_289167.png"));
+                    mangloaisp.add(4,new Loaisp(0,"Thông Tin","https://cdn3.iconfinder.com/data/icons/media-icons-23/100/info2-512.png"));
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CheckConnection.ShowToast_short(getApplicationContext(),error.toString());
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
     }
 
     private void ActionViewFilpper() {
@@ -82,9 +144,10 @@ public class MainActivity extends AppCompatActivity {
         listViewmanhinhchinh = findViewById(R.id.listviewmanhinhchinh);
         drawerLayout = findViewById(R.id.drawerlayout);
         mangloaisp= new ArrayList<>();
+        mangloaisp.add(0,new Loaisp(0,"Trang Chính","https://previews.123rf.com/images/dstarky/dstarky1702/dstarky170200496/71408124-home-icon-or-logo-in-modern-line-style-high-quality-black-outline-pictogram-for-web-site-design-and-.jpg"));
         loaispAdapter = new LoaispAdapter(mangloaisp,getApplicationContext());
         listViewmanhinhchinh.setAdapter(loaispAdapter);
 
 
     }
-}
+ }
