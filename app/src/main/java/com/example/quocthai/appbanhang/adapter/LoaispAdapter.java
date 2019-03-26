@@ -17,13 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoaispAdapter extends BaseAdapter {
+
+
+     ArrayList<Loaisp> arrayListloaisp ;
+     Context context;
+
     public LoaispAdapter(ArrayList<Loaisp> arrayListloaisp, Context context) {
         this.arrayListloaisp = arrayListloaisp;
         this.context = context;
     }
-
-    ArrayList<Loaisp> arrayListloaisp = new ArrayList<>();
-    Context context;
     @Override
     public int getCount() {
         return arrayListloaisp.size();
@@ -39,7 +41,8 @@ public class LoaispAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    class ViewHolder{
+
+    class ViewHoder{
         TextView txttenloaisp;
         ImageView imaglaoaisp;
 
@@ -49,28 +52,25 @@ public class LoaispAdapter extends BaseAdapter {
     }//tạo để ánh xạ bên dong_listview qua để vẽ cho toàn bộ
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
-        if(convertView ==null)
-        {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.dong_listview_loaisp,null);
-            viewHolder.txttenloaisp= convertView.findViewById(R.id.txtloaisp);
-            viewHolder.imaglaoaisp= convertView.findViewById(R.id.imgloaisp);
-            convertView.setTag(viewHolder);
-        }
-        else
-        {
-            viewHolder = (ViewHolder) convertView.getTag();
-            Loaisp loaisp = (Loaisp) getItem(position);
-            viewHolder.txttenloaisp.setText(loaisp.getTenloaisp());
-            Picasso.with(context).load(loaisp.getHinhanhloaisp())
-                    .placeholder(R.drawable.noimage)//nếu hình ảnh chưa load xong thì sẽ hiện
-                    .error(R.drawable.error)//load lỗi thì sẽ hiện
-                    .into(viewHolder.imaglaoaisp);//load xong thì sẽ hiện
-        }
+    public View getView(int i, View view, ViewGroup parent) {
+        ViewHoder viewHoder=null;
+        if (view == null){
+            viewHoder = new ViewHoder();
+            LayoutInflater inflater  = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.dong_listview_loaisp,null);
+            viewHoder.txttenloaisp = (TextView) view.findViewById(R.id.txtloaisp);
+            viewHoder.imaglaoaisp = (ImageView) view.findViewById(R.id.imgloaisp);
+            view.setTag(viewHoder);
 
-        return convertView;
+        }else {
+            viewHoder = (ViewHoder) view.getTag();
+        }
+        Loaisp loaisp = (Loaisp) getItem(i);
+        viewHoder.txttenloaisp.setText(loaisp.getTenloaisp());
+        Picasso.with(context).load(loaisp.getHinhanhloaisp())
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.error)
+                .into(viewHoder.imaglaoaisp);
+        return view;
     }
 }

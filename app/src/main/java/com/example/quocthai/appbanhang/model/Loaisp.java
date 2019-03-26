@@ -4,6 +4,7 @@ public class Loaisp {
     public int Id;
     public String Tenloaisp;
     public String Hinhanhloaisp;
+
     public Loaisp(int id, String tenloaisp, String hinhanhloaisp) {
         Id = id;
         Tenloaisp = tenloaisp;

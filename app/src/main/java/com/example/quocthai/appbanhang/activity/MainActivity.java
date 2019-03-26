@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -65,20 +66,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Getdulieuloaisp() {
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue requesQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Server.Duongdanloaisp, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                if(response!=null)
-                {
-                    for(int i=0;i<=response.length();i++)
-                    {
+                if (response!= null){
+                    for (int i = 0;i<response.length();i++){
                         try {
-                            loaispAdapter.notifyDataSetChanged();
-                            JSONObject jsonObject= response.getJSONObject(i);
-                            id=jsonObject.getInt("Id");
-                            tenloaisp=jsonObject.getString("TenLoai");
-                            hinhanhloaisp=jsonObject.getString("HinhLoai");
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            id = jsonObject.getInt("Id");
+                            Log.d("BBB",jsonObject.getString("TenLoai"));
+                            tenloaisp = (jsonObject.getString("TenLoai"));
+                            hinhanhloaisp = jsonObject.getString("HinhLoai");
                             mangloaisp.add(new Loaisp(id,tenloaisp,hinhanhloaisp));
                             loaispAdapter.notifyDataSetChanged();
 
@@ -86,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    mangloaisp.add(3,new Loaisp(0,"Liên Hệ","https://cdn.onlinewebfonts.com/svg/img_289167.png"));
-                    mangloaisp.add(4,new Loaisp(0,"Thông Tin","https://cdn3.iconfinder.com/data/icons/media-icons-23/100/info2-512.png"));
+                    mangloaisp.add(new Loaisp(0,"Liên hệ","https://cdn4.iconfinder.com/data/icons/bussines-people/572/man-contact-computer-512.png"));
+                    mangloaisp.add(new Loaisp(0,"Thông tin","http://www.smiphee.com/wp-content/uploads/2017/05/services-icon-png-2291-300x300.png"));
+
 
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -98,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 CheckConnection.ShowToast_short(getApplicationContext(),error.toString());
             }
         });
-        requestQueue.add(jsonArrayRequest);
+        requesQueue.add(jsonArrayRequest);
     }
+
 
     private void ActionViewFilpper() {
         ArrayList<String> manghinhquangcao = new ArrayList<>();
@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerlayout);
         mangloaisp= new ArrayList<>();
         mangloaisp.add(0,new Loaisp(0,"Trang Chính","https://previews.123rf.com/images/dstarky/dstarky1702/dstarky170200496/71408124-home-icon-or-logo-in-modern-line-style-high-quality-black-outline-pictogram-for-web-site-design-and-.jpg"));
+
         loaispAdapter = new LoaispAdapter(mangloaisp,getApplicationContext());
         listViewmanhinhchinh.setAdapter(loaispAdapter);
 
