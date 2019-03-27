@@ -5,6 +5,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,7 +23,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.quocthai.appbanhang.R;
 import com.example.quocthai.appbanhang.adapter.LoaispAdapter;
+import com.example.quocthai.appbanhang.adapter.SanphamAdapter;
 import com.example.quocthai.appbanhang.model.Loaisp;
+import com.example.quocthai.appbanhang.model.Sanpham;
 import com.example.quocthai.appbanhang.ultil.CheckConnection;
 import com.example.quocthai.appbanhang.ultil.Server;
 import com.squareup.picasso.Picasso;
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     int id=0;
     String tenloaisp="";
     String hinhanhloaisp="";
+    ArrayList<Sanpham> mangsanpham;
+    SanphamAdapter sanphamAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             ActionBar();
             ActionViewFilpper();
             Getdulieuloaisp();
+            Getdulieuspmoinhat();
         }
         else
         {
@@ -63,6 +69,49 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+    }
+
+    private void Getdulieuspmoinhat() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Server.Duondansanphammoinhat, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if(response!=null)
+                {
+                    int ID=0;
+                    String tensanpham="";
+                    Integer giasanpham=0;
+                    String hinhanhsanpham="";
+                    String motasanpham="";
+                    int Idloaisanpham=0;
+                    for(int i=0;i<response.length();i++)
+                    {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            ID=jsonObject.getInt("Id");
+                            tensanpham=jsonObject.getString("TenSanPham");
+                            giasanpham=jsonObject.getInt("GiaSanPham");
+                            hinhanhsanpham=jsonObject.getString("HinhAnh");
+                            motasanpham=jsonObject.getString("MoTa");
+                            Idloaisanpham =jsonObject.getInt("IdLoai");
+                            mangsanpham.add(new Sanpham(ID,tensanpham,giasanpham,hinhanhsanpham,motasanpham,Idloaisanpham));
+                            sanphamAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
     }
 
     private void Getdulieuloaisp() {
@@ -149,6 +198,11 @@ public class MainActivity extends AppCompatActivity {
         loaispAdapter = new LoaispAdapter(mangloaisp,getApplicationContext());
         listViewmanhinhchinh.setAdapter(loaispAdapter);
 
+        mangsanpham = new ArrayList<>();
+        sanphamAdapter= new SanphamAdapter(getApplicationContext(),mangsanpham);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+        recyclerView.setAdapter(sanphamAdapter);
 
     }
  }

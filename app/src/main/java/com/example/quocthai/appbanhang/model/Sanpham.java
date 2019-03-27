@@ -6,6 +6,8 @@ public class Sanpham
     private String TenSanPham;
     private Integer GiaSanPham;
     private String HinhAnh;
+    private String MoTa;
+    private int IdLoai;
 
     public int getId() {
         return Id;
@@ -47,17 +49,16 @@ public class Sanpham
         MoTa = moTa;
     }
 
-    public String getIdLoai() {
+    public int getIdLoai() {
         return IdLoai;
     }
 
-    public void setIdLoai(String idLoai) {
+    public void setIdLoai(int idLoai) {
         IdLoai = idLoai;
     }
 
-    private String MoTa;
-    private String IdLoai;
-    public Sanpham(int id, String tenSanPham, Integer giaSanPham, String hinhAnh, String moTa, String idLoai) {
+
+    public Sanpham(int id, String tenSanPham, Integer giaSanPham, String hinhAnh, String moTa, int idLoai) {
         Id = id;
         TenSanPham = tenSanPham;
         GiaSanPham = giaSanPham;
