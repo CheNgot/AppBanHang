@@ -49,35 +49,31 @@ public class DienthoaiAdapter extends BaseAdapter {
         public ImageView imgdienthoai;
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Viewholder viewholder = null;
-        if(viewholder==null)
-        {
-            viewholder = new Viewholder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.dong_dienthoai,null);
-            viewholder.txttendienthoai = convertView.findViewById(R.id.textviewtendienthoai);
-            viewholder.txtgiadienthoai= convertView.findViewById(R.id.textviewgiasanpham);
-            viewholder.txtmotadienthoai = convertView.findViewById(R.id.motadienthoai);
-            viewholder.imgdienthoai = convertView.findViewById(R.id.imagviewdienthoai);
-            convertView.setTag(viewholder);
+    public View getView(int i, View view, ViewGroup ViewGroup) {
+        Viewholder viewHolder = null;
+        if (view == null){
+            viewHolder= new Viewholder();
+            LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.dong_dienthoai,null);
+            viewHolder.txttendienthoai = view.findViewById(R.id.textviewtendienthoai);
+            viewHolder.txtgiadienthoai = view.findViewById(R.id.textviewgiadienthoai);
+            viewHolder.txtmotadienthoai = view.findViewById(R.id.motadienthoai);
+            viewHolder.imgdienthoai = view.findViewById(R.id.imagviewdienthoai);
+            view.setTag(viewHolder);
+        }else {
+            viewHolder = (Viewholder) view.getTag();
         }
-        else
-        {
-            viewholder = (Viewholder) convertView.getTag();
-
-        }
-        Sanpham sanpham = (Sanpham) getItem(position);
-        viewholder.txttendienthoai.setText(sanpham.getTenSanPham());
+        Sanpham sanpham = (Sanpham) getItem(i);
+        viewHolder.txttendienthoai.setText(sanpham.getTenSanPham());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        viewholder.txtgiadienthoai.setText("Giá: "+decimalFormat.format(sanpham.getGiaSanPham()));
-        viewholder.txtmotadienthoai.setMaxLines(2);
-        viewholder.txtmotadienthoai.setEllipsize(TextUtils.TruncateAt.END);
-        viewholder.txtmotadienthoai.setText(sanpham.getMoTa());
+        viewHolder.txtgiadienthoai.setText("giá :" + decimalFormat.format(sanpham.getGiaSanPham()) + "Đ");
+        viewHolder.txtmotadienthoai.setMaxLines(2);
+        viewHolder.txtmotadienthoai.setEllipsize(TextUtils.TruncateAt.END);
         Picasso.with(context).load(sanpham.getHinhAnh())
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.error)
-                .into(viewholder.imgdienthoai);
-        return convertView;
+                .into(viewHolder.imgdienthoai);
+
+        return view;
     }
 }
