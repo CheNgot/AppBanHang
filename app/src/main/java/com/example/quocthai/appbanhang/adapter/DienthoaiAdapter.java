@@ -66,9 +66,10 @@ public class DienthoaiAdapter extends BaseAdapter {
         Sanpham sanpham = (Sanpham) getItem(position);
         viewholder.txttendienthoai.setText(sanpham.getTenSanPham());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        viewholder.txtgiadienthoai.setText("giá :" + decimalFormat.format(sanpham.getGiaSanPham()) + "Đ");
+        viewholder.txtgiadienthoai.setText("Giá :" + decimalFormat.format(sanpham.getGiaSanPham()) + "Đ");
         viewholder.txtmotadienthoai.setMaxLines(2);
         viewholder.txtmotadienthoai.setEllipsize(TextUtils.TruncateAt.END);
+        viewholder.txtmotadienthoai.setText(sanpham.getMoTa());
         Picasso.with(context).load(sanpham.getHinhAnh())
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.error)

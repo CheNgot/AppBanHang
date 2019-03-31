@@ -51,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/motadienthoai"
                     android:text="mô tả"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="15sp"/>
 
             </LinearLayout>
