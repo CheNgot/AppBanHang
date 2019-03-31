@@ -1,5 +1,6 @@
 package com.example.quocthai.appbanhang.activity;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             ActionViewFilpper();
             Getdulieuloaisp();
             Getdulieuspmoinhat();
+            CatchOnItemListView();
         }
         else
         {
@@ -69,6 +72,86 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+    }
+
+    private void CatchOnItemListView() {
+        listViewmanhinhchinh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position)
+                {
+                    case 0:
+                        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+                    {
+                        Intent intent= new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                    else
+                    {
+                        CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra kết nối");
+                    }
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+                        {
+                            Intent intent= new Intent(MainActivity.this,Dienthoaiactivity.class);
+                            intent.putExtra("idloaisanpham",mangloaisp.get(position).getId());
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+                            CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra kết nối");
+                        }
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 2:
+                        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+                        {
+                            Intent intent= new Intent(MainActivity.this,LapTopActivity.class);
+                            intent.putExtra("idloaisanpham",mangloaisp.get(position).getId());
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+                            CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra kết nối");
+                        }
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 3:
+                        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+                        {
+                            Intent intent= new Intent(MainActivity.this,LienHeActivity.class);
+
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+                            CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra kết nối");
+                        }
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 4:
+                        if(CheckConnection.haveNetworkConnection(getApplicationContext()))
+                        {
+                            Intent intent= new Intent(MainActivity.this,ThongTinActivity.class);
+
+                            startActivity(intent);
+
+                        }
+                        else
+                        {
+                            CheckConnection.ShowToast_short(getApplicationContext(),"Kiểm tra kết nối");
+                        }
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                }
+            }
+        });
     }
 
     private void Getdulieuspmoinhat() {
@@ -152,10 +235,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void ActionViewFilpper() {
         ArrayList<String> manghinhquangcao = new ArrayList<>();
-        manghinhquangcao.add("https://object-storage.tyo1.cloud.z.com/v1/zc_6c13a3172446411fab7837a8a5479710/mobilecityvn/images/2019/01/xiaomi-redmi-note-7-pink.jpg");
-        manghinhquangcao.add("https://object-storage.tyo1.cloud.z.com/v1/zc_6c13a3172446411fab7837a8a5479710/mobilecityvn/images/2019/01/xiaomi-mi-8-lite-hong.jpg");
-        manghinhquangcao.add("https://object-storage.tyo1.cloud.z.com/v1/zc_6c13a3172446411fab7837a8a5479710/mobilecityvn/images/2019/01/iphone-xs-max-white.jpg");
-        manghinhquangcao.add("https://object-storage.tyo1.cloud.z.com/v1/zc_6c13a3172446411fab7837a8a5479710/mobilecityvn/images/2019/01/iphone-8-plus-red.jpg");
+        manghinhquangcao.add("https://cdn.tgdd.vn/qcao/26_03_2019_09_32_20_huawei-P30Pro-800-300.png");
+        manghinhquangcao.add("https://cdn.tgdd.vn/qcao/27_03_2019_09_41_22_800-300.png");
+        manghinhquangcao.add("https://cdn.tgdd.vn/qcao/09_02_2019_22_58_10_iphone-master-800-300.png");
+        manghinhquangcao.add("https://cdn.tgdd.vn/qcao/22_03_2019_22_17_47_800-300.png");
         for (int i=0;i<manghinhquangcao.size();i++)
         {
             ImageView imageView = new ImageView(getApplicationContext());
