@@ -1,6 +1,8 @@
 package com.example.quocthai.appbanhang.model;
 
-public class Sanpham
+import java.io.Serializable;
+
+public class Sanpham implements Serializable // implement để Intent 1 object qua màn hình khác
 {
     private int Id;
     private String TenSanPham;
