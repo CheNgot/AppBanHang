@@ -48,35 +48,36 @@ public class GioHangAdapter extends BaseAdapter {
         return 0;
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
-        if(convertView ==null)
-        {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+        ViewHolder viewHolder= null;
+        if (view ==null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView= inflater.inflate(R.layout.dong_giohang,null);
-            viewHolder.txttengiohang= convertView.findViewById(R.id.textviewtengiohang);
-            viewHolder.txtgiagiohang= convertView.findViewById(R.id.textviewgiagiohang);
-            viewHolder.imggiohang= convertView.findViewById(R.id.imageviewgiohang);
-            viewHolder.btnminus=convertView.findViewById(R.id.buttonminus);
-            viewHolder.btnvalue=convertView.findViewById(R.id.buttonvalue);
-            viewHolder.btnplus= convertView.findViewById(R.id.buttonplus);
-            convertView.setTag(viewHolder);
+            view = inflater.inflate(R.layout.dong_giohang, null);
+            viewHolder.txttengiohang = view.findViewById(R.id.textviewtengiohang);
+            viewHolder.txtgiagiohang = view.findViewById(R.id.textviewgiagiohang);
+            viewHolder.imggiohang = view.findViewById(R.id.imageviewgiohang);
+            viewHolder.btnminus = view.findViewById(R.id.buttonminus);
+            viewHolder.btnplus = view.findViewById(R.id.buttonplus);
+            viewHolder.btnvalue = view.findViewById(R.id.buttonvalue);
+            view.setTag(viewHolder);
         }
         else
         {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
-        GioHang gioHang = (GioHang) getItem(position);
-        viewHolder.txttengiohang.setText(gioHang.getTensp());
-        DecimalFormat decimalFormat =new DecimalFormat("###,###,###");
-        viewHolder.txtgiagiohang.setText(decimalFormat.format(gioHang.getGia()+" Đ"));
-        Picasso.with(context).load(gioHang.getHinhanh())
+        GioHang giohang = (GioHang) getItem(i);
+        viewHolder.txttengiohang.setText(giohang.getTensp());
+        DecimalFormat decimalFormat= new DecimalFormat("###,###,###");
+        viewHolder.txtgiagiohang.setText(decimalFormat.format(giohang.getGia())+"Đ");
+        Picasso.with(context).load(giohang.getHinhanh())
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.error)
                 .into(viewHolder.imggiohang);
-        viewHolder.btnvalue.setText(gioHang.getSoluong()+"");
-        return convertView;
+        viewHolder.btnvalue.setText(giohang.getSoluong()+"");
+        return view;
     }
+
 }

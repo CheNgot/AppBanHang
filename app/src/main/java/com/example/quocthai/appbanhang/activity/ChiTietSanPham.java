@@ -22,27 +22,28 @@ import com.squareup.picasso.Picasso;
 import java.text.DecimalFormat;
 
 public class ChiTietSanPham extends AppCompatActivity {
-    Toolbar toolbarchitietsanpham;
-    ImageView imgchitetsanpham;
+    Toolbar toolbarChitiet;
+    ImageView imgChitiet;
     TextView txtten,txtgia,txtmota;
-    Spinner spinnerchitietsanpham;
+    Spinner spinner;
     Button btndatmua;
     int id=0;
-    String ten="";
-    int gia=0;
-    String hinhanh="";
-    String mota="";
-    int idloaisp=0;
+    String TenChitiet="";
+    int GiaChitiet=0;
+    String HinhanhChitiet="";
+    String MotaChitiet="";
+    int Idsanpham=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_san_pham);
         Anhxa();
-        ActionToolBar();
+        ActionToolbar();
         GetInformation();
-        CatchEventOnSpinner();
+        CatchEventSpinner();
         EventButton();
     }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
@@ -50,10 +51,9 @@ public class ChiTietSanPham extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.menugiohang :
-                Intent intent = new Intent(getApplicationContext(),GioHangActivity.class);
+        switch (item.getItemId()){
+            case R.id.menugiohang:
+                Intent intent=new Intent(getApplicationContext(), GioHangActivity.class);
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -62,90 +62,83 @@ public class ChiTietSanPham extends AppCompatActivity {
     private void EventButton() {
         btndatmua.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(MainActivity.manggiohang.size()>0)
-                {
-                    int sl= Integer.parseInt(spinnerchitietsanpham.getSelectedItem().toString());
-                    boolean exists =false;
-                    for(int i=0;i<MainActivity.manggiohang.size();i++)
-                    {
-                        if(MainActivity.manggiohang.get(i).getIdsp()==id)
-                        {
+            public void onClick(View view) {
+                if  (MainActivity.manggiohang.size()>0){
+                    int sl=Integer.parseInt(spinner.getSelectedItem().toString());
+                    boolean exists=false;
+                    for (int i = 0;i<MainActivity.manggiohang.size();i++){
+                        if (MainActivity.manggiohang.get(i).getIdsp()==id){
                             MainActivity.manggiohang.get(i).setSoluong(MainActivity.manggiohang.get(i).getSoluong()+sl);
-                            if(MainActivity.manggiohang.get(i).getSoluong()>=10)
-                            {
+                            if (MainActivity.manggiohang.get(i).getSoluong()>=10){
                                 MainActivity.manggiohang.get(i).setSoluong(10);
                             }
-                            MainActivity.manggiohang.get(i).setGia(gia* MainActivity.manggiohang.get(i).getSoluong());
-                            exists= true;
+                            MainActivity.manggiohang.get(i).setGia(GiaChitiet * MainActivity.manggiohang.get(i).getSoluong());
+                            exists=true;
                         }
-
-
                     }
-                    if(exists==true)
-                    {
-                        int soluong= Integer.parseInt(spinnerchitietsanpham.getSelectedItem().toString() );
-                        long giamoi=soluong*gia;
-                        MainActivity.manggiohang.add(new GioHang(id,ten,giamoi,hinhanh,soluong));
+                    if (exists==false){
+                        int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
+                        long Giamoi = soluong * GiaChitiet;
+                        MainActivity.manggiohang.add(new GioHang(id,TenChitiet,Giamoi,HinhanhChitiet,soluong));
                     }
+                }else {
+                    int soluong = Integer.parseInt(spinner.getSelectedItem().toString());
+                    long Giamoi = soluong * GiaChitiet;
+                    MainActivity.manggiohang.add(new GioHang(id,TenChitiet,Giamoi,HinhanhChitiet,soluong));
                 }
-                else
-                {
-                    int soluong= Integer.parseInt(spinnerchitietsanpham.getSelectedItem().toString() );
-                    long giamoi=soluong*gia;
-                    MainActivity.manggiohang.add(new GioHang(id,ten,giamoi,hinhanh,soluong));
-                }
-                Intent intent = new Intent(getApplicationContext(),GioHangActivity.class);
+                Intent intent=new Intent(getApplicationContext(), GioHangActivity.class);
                 startActivity(intent);
             }
         });
+
     }
 
-    private void CatchEventOnSpinner() {
-        Integer[]soluong= new Integer[]{1,2,3,4,5,6,7,8,9,10};
-        ArrayAdapter<Integer> arrayAdapter= new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,soluong);
-        spinnerchitietsanpham.setAdapter(arrayAdapter);
+    private void CatchEventSpinner() {
+        Integer[] soluong=new Integer[]{1,2,3,4,5,6,7,8,9,10};
+        ArrayAdapter<Integer> arrayadapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_dropdown_item,soluong);
+        spinner.setAdapter(arrayadapter);
+
     }
 
     private void GetInformation() {
 
         Sanpham sanpham = (Sanpham) getIntent().getSerializableExtra("thongtinsanpham");
         id = sanpham.getId();
-        ten= sanpham.getTenSanPham();
-        gia = sanpham.getGiaSanPham();
-        mota = sanpham.getMoTa();
-        idloaisp = sanpham.getIdLoai();
-        hinhanh = sanpham.getHinhAnh();
-        txtten.setText(ten);
-        txtmota.setText(mota);
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        txtgia.setText("Giá: "+decimalFormat.format(gia)+"đồng");
-        Picasso.with(getApplicationContext()).load(hinhanh)
+        TenChitiet = sanpham.getTenSanPham();
+        GiaChitiet = sanpham.getGiaSanPham();
+        HinhanhChitiet = sanpham.getHinhAnh();
+        MotaChitiet = sanpham.getMoTa();
+        Idsanpham = sanpham.getIdLoai();
+        txtten.setText(TenChitiet);
+        DecimalFormat decimaFormat = new DecimalFormat("###,###,###");
+        txtgia.setText("giá :"+decimaFormat.format(GiaChitiet)+"Đ");
+        txtmota.setText(MotaChitiet);
+        Picasso.with(getApplicationContext()).load(HinhanhChitiet)
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.error)
-                .into(imgchitetsanpham);
+                .into(imgChitiet);
     }
 
-    private void ActionToolBar() {
-        setSupportActionBar(toolbarchitietsanpham);
+    private void ActionToolbar() {
+        setSupportActionBar(toolbarChitiet);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbarchitietsanpham.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbarChitiet.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
     }
 
     private void Anhxa() {
-        toolbarchitietsanpham = findViewById(R.id.toolbarchitiet);
+        toolbarChitiet = findViewById(R.id.toolbarchitiet);
+        imgChitiet = findViewById(R.id.imageviewchitietsanpham);
         txtten = findViewById(R.id.texviewchitiettensanpham);
         txtgia = findViewById(R.id.texviewchitietgiasanpham);
-        spinnerchitietsanpham = findViewById(R.id.spinenrchitietsoluong);
-        txtmota =findViewById(R.id.textviewmotachitietsanpham);
+        txtmota = findViewById(R.id.textviewmotachitietsanpham);
+        spinner = findViewById(R.id.spinenrchitietsoluong);
         btndatmua = findViewById(R.id.buttondamua);
-        imgchitetsanpham= findViewById(R.id.imageviewchitietsanpham);
-
 
     }
 }
