@@ -10,6 +10,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -29,6 +31,7 @@ import com.example.quocthai.appbanhang.adapter.SanphamAdapter;
 import com.example.quocthai.appbanhang.model.Loaisp;
 import com.example.quocthai.appbanhang.model.Sanpham;
 import com.example.quocthai.appbanhang.ultil.CheckConnection;
+import com.example.quocthai.appbanhang.ultil.GioHang;
 import com.example.quocthai.appbanhang.ultil.Server;
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     String hinhanhloaisp="";
     ArrayList<Sanpham> mangsanpham;
     SanphamAdapter sanphamAdapter;
+    public static ArrayList<GioHang> manggiohang;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,23 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menugiohang :
+                Intent intent = new Intent(getApplicationContext(),GioHangActivity.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void CatchOnItemListView() {
@@ -286,6 +307,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         recyclerView.setAdapter(sanphamAdapter);
+
+        if(manggiohang !=null)
+        {}
+        else
+        {
+            manggiohang=new ArrayList<>();
+        }
+
 
     }
  }
