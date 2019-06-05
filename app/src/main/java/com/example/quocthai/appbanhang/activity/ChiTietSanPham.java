@@ -111,7 +111,7 @@ public class ChiTietSanPham extends AppCompatActivity {
         Idsanpham = sanpham.getIdLoai();
         txtten.setText(TenChitiet);
         DecimalFormat decimaFormat = new DecimalFormat("###,###,###");
-        txtgia.setText("giá :"+decimaFormat.format(GiaChitiet)+"Đ");
+        txtgia.setText("Giá :"+decimaFormat.format(GiaChitiet)+"Đ");
         txtmota.setText(MotaChitiet);
         Picasso.with(getApplicationContext()).load(HinhanhChitiet)
                 .placeholder(R.drawable.noimage)

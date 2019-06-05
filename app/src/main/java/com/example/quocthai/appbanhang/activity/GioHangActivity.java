@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.quocthai.appbanhang.R;
 import com.example.quocthai.appbanhang.adapter.GioHangAdapter;
 import com.example.quocthai.appbanhang.ultil.CheckConnection;
+import com.example.quocthai.appbanhang.ultil.GioHang;
 
 import java.text.DecimalFormat;
 
@@ -36,6 +38,52 @@ public class GioHangActivity extends AppCompatActivity {
         EvenUltil();
         CactchOnItemListView();
         EvenButton();
+
+    }
+
+    private void CactchOnItemListView() {
+        lvgiohang.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(GioHangActivity.this);
+                builder.setTitle("Xác Nhận Xóa Sản Phẩm");
+                builder.setMessage("Chắc Chưa ?? :(");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(MainActivity.manggiohang.size()<=0)
+                        {
+                            txtthongbao.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            MainActivity.manggiohang.remove(position);
+                            giohangAdapter.notifyDataSetChanged();
+                            EvenUltil();
+                            if(MainActivity.manggiohang.size()<=0)
+                            {
+                                txtthongbao.setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                txtthongbao.setVisibility(View.INVISIBLE);
+                                giohangAdapter.notifyDataSetChanged();
+                                EvenUltil();
+                            }
+                        }
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        giohangAdapter.notifyDataSetChanged();
+                        EvenUltil();
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
     }
 
     private void EvenButton() {
@@ -59,47 +107,7 @@ public class GioHangActivity extends AppCompatActivity {
         });
     }
 
-    private void CactchOnItemListView() {
-        lvgiohang.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long l) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(GioHangActivity.this);
-                builder.setTitle("xac nhan xoa san pham");
-                builder.setMessage("ban co chac se xoa san pham nay");
-                builder.setPositiveButton("co", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        if (MainActivity.manggiohang.size()<=0){
-                            txtthongbao.setVisibility(View.VISIBLE);
-                        }else {
-                            MainActivity.manggiohang.remove(position);
-                            giohangAdapter.notifyDataSetChanged();
-                            EvenUltil();
-                            if (MainActivity.manggiohang.size()<=0){
-                                txtthongbao.setVisibility(View.VISIBLE);
-                            }else {
-                                txtthongbao.setVisibility(View.INVISIBLE);
-                                giohangAdapter.notifyDataSetChanged();
-                                EvenUltil();
-                            }
-                        }
-                    }
-                });
-                builder.setNegativeButton("khong", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        giohangAdapter.notifyDataSetChanged();
-                        EvenUltil();
-                    }
-                });
 
-                builder.show();
-                return true;
-            }
-        });
-
-
-    }
 
     public static void EvenUltil() {
         long tongtien=0;
