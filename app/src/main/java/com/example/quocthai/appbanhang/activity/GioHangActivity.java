@@ -11,6 +11,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.quocthai.appbanhang.R;
@@ -28,6 +29,7 @@ public class GioHangActivity extends AppCompatActivity {
     Button btnthanhtoan,btntieptucmua;
     Toolbar toolbargiohang;
     GioHangAdapter giohangAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class GioHangActivity extends AppCompatActivity {
         EvenUltil();
         CactchOnItemListView();
         EvenButton();
+
 
     }
 
@@ -90,19 +93,24 @@ public class GioHangActivity extends AppCompatActivity {
         btntieptucmua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
             }
         });
         btnthanhtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainActivity.manggiohang.size()>0){
-                    Intent intent=new Intent(getApplicationContext(),ThongTinActivity.class);
+                if(MainActivity.manggiohang.size()>0)
+                {
+                    Intent intent = new Intent(getApplicationContext(),ThongTinKhachHangActivity.class);
                     startActivity(intent);
-                }else {
-                    CheckConnection.ShowToast_short(getApplicationContext(),"Giỏ hàng của bạn chưa có sản phẩm thanh toán");
                 }
+                else
+                {
+                    CheckConnection.ShowToast_short(getApplicationContext(),"Giỏ Hàng Trống");
+                }
+
+
             }
         });
     }
